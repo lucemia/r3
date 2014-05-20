@@ -11,10 +11,11 @@
 #include "r3_str.h"
 #include "str_array.h"
 #include "r3_define.h"
+#include "zmalloc.h"
 
 int strndiff(char * d1, char * d2, unsigned int n) {
     char * o = d1;
-    while ( *d1 == *d2 && n-- > 0 ) { 
+    while ( *d1 == *d2 && n-- > 0 ) {
         d1++;
         d2++;
     }
@@ -24,7 +25,7 @@ int strndiff(char * d1, char * d2, unsigned int n) {
 
 int strdiff(char * d1, char * d2) {
     char * o = d1;
-    while( *d1 == *d2 ) { 
+    while( *d1 == *d2 ) {
         d1++;
         d2++;
     }
@@ -222,7 +223,7 @@ char** str_split(char* a_str, const char a_delim)
        knows where the list of returned strings ends. */
     count++;
 
-    result = malloc(sizeof(char*) * count);
+    result = zmalloc(sizeof(char*) * count);
 
     if (result)
     {
@@ -262,7 +263,7 @@ char *strdup(const char *s) {
     while( s[count] )
         ++count;
     ++count;
-    out = malloc(sizeof(char) * count);
+    out = zmalloc(sizeof(char) * count);
     out[--count] = 0;
     while( --count >= 0 )
         out[count] = s[count];
@@ -277,7 +278,7 @@ char *strndup(const char *s, int n) {
     while( count < n && s[count] )
         ++count;
     ++count;
-    out = malloc(sizeof(char) * count);
+    out = zmalloc(sizeof(char) * count);
     out[--count] = 0;
     while( --count >= 0 )
         out[count] = s[count];

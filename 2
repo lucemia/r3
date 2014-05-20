@@ -1,0 +1,18 @@
+Making check in src
+make[1]: Entering directory `/home/omer/Documents/Projects/r3/src'
+make[1]: Nothing to be done for `check'.
+make[1]: Leaving directory `/home/omer/Documents/Projects/r3/src'
+Making check in tests
+make[1]: Entering directory `/home/omer/Documents/Projects/r3/tests'
+make  check_tree  check_slug
+make[2]: Entering directory `/home/omer/Documents/Projects/r3/tests'
+/bin/bash ../libtool  --tag=CC   --mode=link gcc -std=gnu99 -ggdb -pthread   -I.. -I../include   -g -O2 -pthread -lpcre -lcheck_pic -lrt -lm   -L../src -lr3 -lcheck   -o check_tree check_tree.o bench.o  
+libtool: link: gcc -std=gnu99 -ggdb -pthread -I.. -I../include -g -O2 -pthread -o .libs/check_tree check_tree.o bench.o  -lpcre -lcheck_pic -lrt -lm -L../src /home/omer/Documents/Projects/r3/src/.libs/libr3.so -lcheck -pthread
+/home/omer/Documents/Projects/r3/src/.libs/libr3.so: undefined reference to `zmalloc'
+/home/omer/Documents/Projects/r3/src/.libs/libr3.so: undefined reference to `zfree'
+collect2: error: ld returned 1 exit status
+make[2]: *** [check_tree] Error 1
+make[2]: Leaving directory `/home/omer/Documents/Projects/r3/tests'
+make[1]: *** [check-am] Error 2
+make[1]: Leaving directory `/home/omer/Documents/Projects/r3/tests'
+make: *** [check-recursive] Error 1

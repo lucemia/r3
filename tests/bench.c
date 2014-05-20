@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/time.h>
+#include "zmalloc.h"
 
 long unixtime() {
     struct timeval tp;
@@ -24,7 +25,7 @@ double microtime() {
     long sec = 0L;
     double msec = 0.0;
     char ret[100];
-    
+
     if (gettimeofday((struct timeval *) &tp, (NUL)) == 0) {
         msec = (double) (tp.tv_usec / MICRO_IN_SEC);
         sec = tp.tv_sec;

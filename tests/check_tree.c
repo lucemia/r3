@@ -7,7 +7,7 @@
 #include "r3_define.h"
 #include "str_array.h"
 #include "bench.h"
-
+#include "zmalloc.h"
 
 
 START_TEST (test_ltrim_slash)
@@ -118,35 +118,35 @@ START_TEST (test_compile_slug)
     char * pattern;
     pattern = compile_slug("{id}", strlen("{id}"));
     ck_assert_str_eq( pattern, "([^/]+)" );
-    free(pattern);
+    zfree(pattern);
 
     pattern = compile_slug("/{id}", strlen("/{id}"));
     ck_assert_str_eq( pattern, "/([^/]+)" );
-    free(pattern);
+    zfree(pattern);
 
     pattern = compile_slug("-{id}", strlen("-{id}"));
     ck_assert_str_eq( pattern, "-([^-]+)" );
-    free(pattern);
+    zfree(pattern);
 
     pattern = compile_slug("{id}-{title}", strlen("{id}-{title}"));
     ck_assert_str_eq( pattern, "([^/]+)-([^-]+)" );
-    free(pattern);
+    zfree(pattern);
 
 
     pattern = compile_slug("{id:[a-z]+}", strlen("{id:[a-z]+}") );
     ck_assert_str_eq( pattern, "([a-z]+)" );
-    free(pattern);
+    zfree(pattern);
 
 
     pattern = compile_slug("/path/{id:[a-z]+}", strlen("/path/{id:[a-z]+}") );
     ck_assert_str_eq( pattern, "/path/([a-z]+)" );
-    free(pattern);
+    zfree(pattern);
     */
 
     /*
-    char * p = malloc(sizeof(char) * 10);
+    char * p = zmalloc(sizeof(char) * 10);
     strncat(p, "foo", 3);
-    free(p);
+    zfree(p);
     */
 
 

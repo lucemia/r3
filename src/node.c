@@ -4,8 +4,8 @@
 #include <string.h>
 #include <assert.h>
 
-// Jemalloc memory management
-// #include <jemalloc/jemalloc.h>
+// memory management
+#include "zmalloc.h"
 
 // PCRE
 #include <pcre.h>
@@ -25,9 +25,9 @@
  * Create a node object
  */
 node * r3_tree_create(int cap) {
-    node * n = (node*) malloc( sizeof(node) );
+    node * n = (node*) zmalloc( sizeof(node) );
 
-    n->edges = (edge**) malloc( sizeof(edge*) * cap );
+    n->edges = (edge**) zmalloc( sizeof(edge*) * cap );
     n->edge_len = 0;
     n->edge_cap = cap;
 
@@ -51,18 +51,18 @@ void r3_tree_free(node * tree) {
         }
     }
     if (tree->edges)
-        free(tree->edges);
+        zfree(tree->edges);
     if (tree->routes)
-        free(tree->routes);
+        zfree(tree->routes);
     if (tree->combined_pattern)
-        free(tree->combined_pattern);
+        zfree(tree->combined_pattern);
     if (tree->pcre_pattern)
-        free(tree->pcre_pattern);
+        zfree(tree->pcre_pattern);
     if (tree->pcre_extra)
-        free(tree->pcre_extra);
-    if (tree->ov) 
-        free(tree->ov);
-    free(tree);
+        zfree(tree->pcre_extra);
+    if (tree->ov)
+        zfree(tree->ov);
+    zfree(tree);
     tree = NULL;
 }
 
@@ -91,7 +91,7 @@ edge * r3_node_add_child(node * n, char * pat , node *child) {
 void r3_node_append_edge(node *n, edge *e) {
     if (n->edges == NULL) {
         n->edge_cap = 3;
-        n->edges = malloc(sizeof(edge) * n->edge_cap);
+        n->edges = zmalloc(sizeof(edge) * n->edge_cap);
     }
     if (n->edge_len >= n->edge_cap) {
         n->edge_cap *= 2;
@@ -182,9 +182,9 @@ void r3_tree_compile_patterns(node * n) {
     unsigned int option_bits = 0;
 
     if (n->pcre_pattern)
-        free(n->pcre_pattern);
+        zfree(n->pcre_pattern);
     if (n->pcre_extra)
-        free(n->pcre_extra);
+        zfree(n->pcre_extra);
 
     // n->pcre_pattern;
     n->pcre_pattern = pcre_compile(
@@ -206,7 +206,7 @@ void r3_tree_compile_patterns(node * n) {
 
 
 match_entry * match_entry_createl(char * path, int path_len) {
-    match_entry * entry = malloc(sizeof(match_entry));
+    match_entry * entry = zmalloc(sizeof(match_entry));
     if(!entry)
         return NULL;
     entry->vars = str_array_create(3);
@@ -218,7 +218,7 @@ match_entry * match_entry_createl(char * path, int path_len) {
 
 void match_entry_free(match_entry * entry) {
     str_array_free(entry->vars);
-    free(entry);
+    zfree(entry);
 }
 
 
@@ -344,7 +344,7 @@ inline edge * r3_node_find_edge_str(node * n, char * str, int str_len) {
 
 
 node * r3_node_create() {
-    node * n = (node*) malloc( sizeof(node) );
+    node * n = (node*) zmalloc( sizeof(node) );
     n->edges = NULL;
     n->edge_len = 0;
     n->edge_cap = 0;
@@ -365,11 +365,11 @@ route * r3_route_create(char * path) {
 }
 
 void r3_route_free(route * route) {
-    free(route);
+    zfree(route);
 }
 
 route * r3_route_createl(char * path, int path_len) {
-    route * info = malloc(sizeof(route));
+    route * info = zmalloc(sizeof(route));
     info->path = path;
     info->path_len = path_len;
     info->request_method = 0; // can be (GET || POST)
@@ -502,7 +502,7 @@ bool r3_node_has_slug_edges(node *n) {
     for ( int i = 0 ; i < n->edge_len ; i++ ) {
         e = n->edges[i];
         e->has_slug = contains_slug(e->pattern);
-        if (e->has_slug) 
+        if (e->has_slug)
             found = TRUE;
     }
     return found;
@@ -577,12 +577,12 @@ int r3_route_cmp(route *r1, match_entry *r2) {
 
 
 /**
- * 
+ *
  */
 void r3_node_append_route(node * n, route * r) {
     if (n->routes == NULL) {
         n->route_cap = 3;
-        n->routes = malloc(sizeof(route) * n->route_cap);
+        n->routes = zmalloc(sizeof(route) * n->route_cap);
     }
     if (n->route_len >= n->route_cap) {
         n->route_cap *= 2;
