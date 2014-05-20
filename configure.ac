@@ -48,7 +48,7 @@ AM_CONDITIONAL(ENABLE_GRAPHVIZ, test "x$enable_graphviz" = "xyes")
 AC_DEFINE(ENABLE_GRAPHVIZ, test "x$enable_graphviz" = "xyes", "whether graphviz is enable")
 
 
-PKG_CHECK_MODULES(DEPS, [libpcre check])
+PKG_CHECK_MODULES(DEPS, [libpcre check jemalloc])
 AC_SUBST(DEPS_CFLAGS)
 AC_SUBST(DEPS_LIBS)
 AC_CONFIG_FILES([
