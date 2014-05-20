@@ -95,7 +95,7 @@ void r3_node_append_edge(node *n, edge *e) {
     }
     if (n->edge_len >= n->edge_cap) {
         n->edge_cap *= 2;
-        edge ** p = realloc(n->edges, sizeof(edge) * n->edge_cap);
+        edge ** p = zrealloc(n->edges, sizeof(edge) * n->edge_cap);
         if(p) {
             n->edges = p;
         }
@@ -138,7 +138,7 @@ void r3_tree_compile_patterns(node * n) {
     char * cpat;
     char * p;
 
-    cpat = calloc(sizeof(char),128);
+    cpat = zcalloc(128);
     if (cpat==NULL)
         return;
 
@@ -170,7 +170,7 @@ void r3_tree_compile_patterns(node * n) {
     info("pattern: %s\n",cpat);
 
     n->ov_cnt = (1 + n->edge_len) * 3;
-    n->ov = (int*) calloc(sizeof(int), n->ov_cnt);
+    n->ov = (int*) zcalloc(n->ov_cnt);
 
 
     n->combined_pattern = cpat;
@@ -586,7 +586,7 @@ void r3_node_append_route(node * n, route * r) {
     }
     if (n->route_len >= n->route_cap) {
         n->route_cap *= 2;
-        n->routes = realloc(n->routes, sizeof(route) * n->route_cap);
+        n->routes = zrealloc(n->routes, sizeof(route) * n->route_cap);
     }
     n->routes[ n->route_len++ ] = r;
 }

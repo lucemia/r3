@@ -34,7 +34,7 @@ bool str_array_is_full(str_array * l) {
 }
 
 bool str_array_resize(str_array *l, int new_cap) {
-    l->tokens = realloc(l->tokens, sizeof(char**) * new_cap);
+    l->tokens = zrealloc(l->tokens, sizeof(char**) * new_cap);
     l->cap = new_cap;
     return l->tokens != NULL;
 }

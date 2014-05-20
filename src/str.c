@@ -155,7 +155,7 @@ char * compile_slug(char * str, int len)
     s1 = find_slug_placeholder(str, &s1_len);
 
     if ( s1 == NULL ) {
-        return strdup(str);
+        return zstrdup(str);
     }
 
     char * out = NULL;
@@ -192,7 +192,7 @@ char * ltrim_slash(char* str)
 {
     char * p = str;
     while (*p == '/') p++;
-    return strdup(p);
+    return zstrdup(p);
 }
 
 char** str_split(char* a_str, const char a_delim)
@@ -233,7 +233,7 @@ char** str_split(char* a_str, const char a_delim)
         while (token)
         {
             assert(idx < count);
-            *(result + idx++) = strdup(token);
+            *(result + idx++) = zstrdup(token);
             token = strtok(0, delim);
         }
         assert(idx == count - 1);
@@ -257,7 +257,7 @@ void print_indent(int level) {
 }
 
 #ifndef HAVE_STRDUP
-char *strdup(const char *s) {
+char *zstrdup(const char *s) {
     char *out;
     int count = 0;
     while( s[count] )
