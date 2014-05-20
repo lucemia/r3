@@ -13,6 +13,7 @@
 #include "r3_gvc.h"
 #include "str_array.h"
 #include "bench.h"
+#include "zmalloc.h"
 
 START_TEST (test_gvc_render_dot)
 {

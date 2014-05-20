@@ -11,6 +11,8 @@
 #include "r3.h"
 #include "r3_str.h"
 #include "str_array.h"
+#include "r3_define.h"
+#include "zmalloc.h"
 
 /**
  * provide a quick way to count slugs, simply search for '{'
@@ -134,7 +136,7 @@ char * slug_compile(char * str, int len)
     s1 = find_slug_placeholder(str, &s1_len);
 
     if ( s1 == NULL ) {
-        return strdup(str);
+        return zstrdup(str);
     }
 
     char * out = NULL;
@@ -171,7 +173,7 @@ char * ltrim_slash(char* str)
 {
     char * p = str;
     while (*p == '/') p++;
-    return strdup(p);
+    return zstrdup(p);
 }
 
 void str_repeat(char *s, char *c, int len) {
@@ -188,13 +190,13 @@ void print_indent(int level) {
 }
 
 #ifndef HAVE_STRDUP
-char *strdup(const char *s) {
+char *zstrdup(const char *s) {
     char *out;
     int count = 0;
     while( s[count] )
         ++count;
     ++count;
-    out = malloc(sizeof(char) * count);
+    out = zmalloc(sizeof(char) * count);
     out[--count] = 0;
     while( --count >= 0 )
         out[count] = s[count];
@@ -209,7 +211,7 @@ char *strndup(const char *s, int n) {
     while( count < n && s[count] )
         ++count;
     ++count;
-    out = malloc(sizeof(char) * count);
+    out = zmalloc(sizeof(char) * count);
     out[--count] = 0;
     while( --count >= 0 )
         out[count] = s[count];
