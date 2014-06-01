@@ -55,7 +55,7 @@ R3Tree_insert_path(R3Tree* self, PyObject *args, PyObject *kwds)
 
     if (! PyArg_ParseTupleAndKeywords(args, kwds, "|OOi", kwlist,
                                       &path, &data))
-        return -1;
+        return NULL ;
 
     if (path == NULL) {
         PyErr_SetString(PyExc_AttributeError, "path");
@@ -152,14 +152,14 @@ static PyMethodDef module_methods[] = {
 #define PyMODINIT_FUNC void
 #endif
 PyMODINIT_FUNC
-initR3Tree3(void)
+initpyr3(void)
 {
     PyObject* m;
 
     if (PyType_Ready(&R3TreeType) < 0)
         return;
 
-    m = Py_InitModule3("R3Tree3", module_methods,
+    m = Py_InitModule3("R3Tree", module_methods,
                        "Example module that creates an extension type.");
 
     if (m == NULL)
